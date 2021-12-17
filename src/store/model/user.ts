@@ -1,0 +1,24 @@
+import { Action, action, persist } from "easy-peasy";
+
+export interface IUser {
+  in: string;
+  name: string;
+  // phoneNumber: string,
+}
+
+export interface IUserModel {
+  users: IUser[];
+  setUsers: Action<IUserModel, IUser>;
+}
+
+export const userModel: IUserModel = persist(
+  {
+    users: [],
+    setUsers: action((state, user) => {
+      state.users.push(user);
+    }),
+  },
+  {
+    storage: "localStorage",
+  }
+);
