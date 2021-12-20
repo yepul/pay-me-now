@@ -1,7 +1,7 @@
 import { Action, action, persist } from "easy-peasy";
 
 export interface IUser {
-  in: string;
+  id: string;
   name: string;
   // phoneNumber: string,
 }
