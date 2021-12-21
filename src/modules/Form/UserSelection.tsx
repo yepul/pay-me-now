@@ -1,7 +1,8 @@
 import { useStoreActions, useStoreState } from "../../store/hooks";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import { schema } from "./schema";
+import { matchSorter } from "match-sorter";
 
 export const UserSelection = () => {
   const users = useStoreState((state) => state.user.users);
@@ -9,15 +10,24 @@ export const UserSelection = () => {
 
   const formik = useFormik<{ name: string }>({
     initialValues: { name: "" },
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       setUsers(values.name);
+      resetForm();
     },
     validationSchema: schema,
   });
 
-  const handleAddUser = () => {
-    formik.handleSubmit();
+  const handleAddUser = async () => {
+    await formik.handleSubmit();
   };
+
+  const recommendation = useMemo(() => {
+    if (!formik.values.name) {
+      return users;
+    }
+
+    return matchSorter(users, formik.values.name, { keys: ["name"] });
+  }, [users, formik.values.name]);
 
   return (
     <div className="mb-4">
@@ -34,12 +44,13 @@ export const UserSelection = () => {
         placeholder="Participant"
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
+        value={formik.values.name}
       />
       {formik.errors.name && (
         <span className="text-sm text-red-400">{formik.errors.name}</span>
       )}
       <div className="border-gray-800 border-2">
-        {users.map((user) => (
+        {recommendation.map((user) => (
           <div key={user.id} className="mt-2 align-center flex">
             <input
               type="checkbox"
