@@ -3,6 +3,7 @@ import { ChangeEvent, useMemo, useState } from "react";
 import { useFormik } from "formik";
 import { schema } from "./schema";
 import { matchSorter } from "match-sorter";
+import { useDebounce } from "use-debounce";
 
 export const UserSelection = () => {
   const users = useStoreState((state) => state.user.users);
@@ -21,13 +22,15 @@ export const UserSelection = () => {
     await formik.handleSubmit();
   };
 
+  const [userInput] = useDebounce(formik.values.name, 250);
+
   const recommendation = useMemo(() => {
-    if (!formik.values.name) {
+    if (!userInput) {
       return users;
     }
 
     return matchSorter(users, formik.values.name, { keys: ["name"] });
-  }, [users, formik.values.name]);
+  }, [users, userInput]);
 
   return (
     <div className="mb-4">
@@ -66,9 +69,15 @@ export const UserSelection = () => {
             </label>
           </div>
         ))}
-        <button className="text-blue-400" type="button" onClick={handleAddUser}>
-          add user
-        </button>
+        {!recommendation.length && (
+          <button
+            className="text-blue-400"
+            type="button"
+            onClick={handleAddUser}
+          >
+            add user
+          </button>
+        )}
       </div>
     </div>
   );
