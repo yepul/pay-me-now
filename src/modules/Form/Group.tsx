@@ -1,15 +1,28 @@
-import { FunctionComponent } from "react";
+import { ChangeEvent, FunctionComponent } from "react";
 import { UserSelection } from "./UserSelection";
-
-const people = [
-  { id: 1, name: "Wan" },
-  { id: 2, name: "Abg Fazli" },
-  { id: 3, name: "Kakngah" },
-  { id: 4, name: "Mior" },
-  // { id: 5, name: "Katelyn Rohan" },
-];
+import { useFormik } from "formik";
+import { IGroup } from "../../store/model/group";
 
 export const GroupForm: FunctionComponent = () => {
+  const formik = useFormik<Omit<IGroup, "id">>({
+    initialValues: {
+      name: "",
+      users: [],
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  const handleUser = (event: ChangeEvent<HTMLInputElement>) => {
+    formik.setFieldValue(
+      "users",
+      event.target.checked
+        ? [...formik.values.users, event.target.value]
+        : formik.values.users.filter((userId) => userId !== event.target.value)
+    );
+  };
+
   return (
     <>
       <form>
@@ -25,10 +38,9 @@ export const GroupForm: FunctionComponent = () => {
             id="name"
             type="text"
             placeholder="Name"
-            // onChange={}
           />
         </div>
-        <UserSelection />
+        <UserSelection users={formik.values.users} handleUser={handleUser} />
       </form>
     </>
   );
