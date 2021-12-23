@@ -1,6 +1,6 @@
 import { useStoreActions, useStoreState } from "../../store/hooks";
 import { useFormik } from "formik";
-import { schema } from "./schema";
+import { userSelectionSchema } from "./user-selection-schema";
 import { ChangeEvent, FunctionComponent, useMemo } from "react";
 import { matchSorter } from "match-sorter";
 import { useDebounce } from "use-debounce";
@@ -21,7 +21,7 @@ export const UserSelection: FunctionComponent<IUserSelection> = (props) => {
       setUsers(values.name);
       resetForm();
     },
-    validationSchema: schema,
+    validationSchema: userSelectionSchema,
   });
 
   const handleAddUser = () => {
