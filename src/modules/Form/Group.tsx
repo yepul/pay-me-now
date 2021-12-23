@@ -3,19 +3,8 @@ import { UserSelection } from "./UserSelection";
 import { useFormik } from "formik";
 import { IGroup } from "../../store/model/group";
 import { useStoreActions } from "../../store/hooks";
-import * as yup from "yup";
 import { useRouter } from "next/router";
-
-const schema = yup.object().shape({
-  name: yup
-    .string()
-    .required("group name in required")
-    .max(40, "group name exceed 40 characters"),
-  users: yup
-    .array()
-    .min(1, "participant is required")
-    .required("participant is required"),
-});
+import { schema } from "./group-chema";
 
 export const GroupForm: FunctionComponent = () => {
   const router = useRouter();
