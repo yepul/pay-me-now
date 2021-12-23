@@ -22,7 +22,7 @@ const groupId = () => {
   }, [router.query.created]);
 
   const handleAddExpense = async () => {
-    await router.push(`/group/${router.query.id}/expense`);
+    await router.push(`/group/${router.query.id}/add-expense`);
   };
 
   return (
