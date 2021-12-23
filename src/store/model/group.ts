@@ -1,7 +1,7 @@
 import { Action, action, persist } from "easy-peasy";
 
 export interface IGroup {
-  id: string;
+  id?: string;
   name: string;
   users: string[];
   // phoneNumber: string,
@@ -9,14 +9,15 @@ export interface IGroup {
 
 export interface IGroupModel {
   groups: IGroup[];
-  setGroups: Action<IGroupModel, Omit<IGroup, "id">>;
+  setGroups: Action<IGroupModel, IGroup>;
 }
 
 export const groupModel: IGroupModel = persist(
   {
     groups: [],
     setGroups: action((state, group) => {
-      state.groups.push({ id: `group-${new Date().getTime()}`, ...group });
+      group["id"] = `group-${new Date().getTime()}?`;
+      state.groups.push(group);
     }),
   },
   {
