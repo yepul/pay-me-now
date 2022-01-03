@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent } from "react";
+import { ChangeEvent, FunctionComponent, useMemo } from "react";
 import { useFormik } from "formik";
 import { useStoreActions } from "../../store/hooks";
 import { useRouter } from "next/router";
@@ -6,9 +6,16 @@ import { schema } from "./group-chema";
 import { IExpenseValue } from "../../store/model/expense";
 import { TextField } from "../../components/TextField";
 import { AutoComplete } from "../../components/AutoComplete";
+import { IUser } from "../../store/model/user";
 
 export const ExpenseForm: FunctionComponent = () => {
   const router = useRouter();
+
+  const getGroup = useStoreActions((actions) => actions.group.getGroup);
+  const users = useMemo(
+    () => getGroup(router.query.id as string).users,
+    [getGroup, router.query.id]
+  );
   const setExpenses = useStoreActions((actions) => actions.expense.setExpenses);
   const formik = useFormik<Omit<IExpenseValue, "id">>({
     initialValues: {
@@ -59,6 +66,7 @@ export const ExpenseForm: FunctionComponent = () => {
           label="Participant"
           id="users"
           placeholder="participants"
+          options={users as IUser[]}
         />
       </section>
       <button
