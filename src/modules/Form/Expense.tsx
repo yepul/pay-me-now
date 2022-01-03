@@ -1,12 +1,11 @@
 import { ChangeEvent, FunctionComponent } from "react";
-import { UserSelection } from "./UserSelection";
 import { useFormik } from "formik";
-import { IGroup } from "../../store/model/group";
 import { useStoreActions } from "../../store/hooks";
 import { useRouter } from "next/router";
 import { schema } from "./group-chema";
 import { IExpenseValue } from "../../store/model/expense";
 import { TextField } from "../../components/TextField";
+import { AutoComplete } from "../../components/AutoComplete";
 
 export const ExpenseForm: FunctionComponent = () => {
   const router = useRouter();
@@ -55,11 +54,12 @@ export const ExpenseForm: FunctionComponent = () => {
         value={formik.values.total}
         onChange={formik.handleChange}
       />
-      <section aria-details="user selection section">
-        <UserSelection users={formik.values.users} handleUser={handleUser} />
-        {formik.errors.users && (
-          <span className="text-sm text-red-400">{formik.errors.users}</span>
-        )}
+      <section aria-details="user selection section" className="mb-4">
+        <AutoComplete
+          label="Participant"
+          id="users"
+          placeholder="participants"
+        />
       </section>
       <button
         type="submit"
