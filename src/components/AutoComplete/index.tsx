@@ -2,6 +2,7 @@ import { FunctionComponent, useState } from "react";
 import { ITextField, TextField } from "../TextField";
 import { IModal, Modal } from "./Modal.AutoComplete";
 import { shift, useFloating } from "@floating-ui/react-dom";
+import { useClickAway } from "../../utility/useClickAway";
 
 interface IAutoComplete extends ITextField, IModal {}
 
@@ -23,6 +24,9 @@ export const AutoComplete: FunctionComponent<IAutoComplete> = ({
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  useClickAway(refs.reference, handleCloseModal);
+
   return (
     <div ref={reference} className="relative">
       <TextField
