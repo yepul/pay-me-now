@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, RefObject, useEffect, useState } from "react";
 import { ITextField, TextField } from "../TextField";
 import { IModal, Modal } from "./Modal.AutoComplete";
 import { shift, useFloating } from "@floating-ui/react-dom";
@@ -25,7 +25,9 @@ export const AutoComplete: FunctionComponent<IAutoComplete> = ({
     setShowModal(false);
   };
 
-  useClickAway(refs.reference, handleCloseModal);
+  useClickAway(() => {
+    handleCloseModal();
+  }, [refs.reference as RefObject<HTMLElement>]);
 
   return (
     <div ref={reference} className="relative">
