@@ -18,7 +18,10 @@ export const GroupForm: FunctionComponent = () => {
     onSubmit: (values) => {
       const result = setGroup(values);
       //@ts-ignore
-      router?.replace(`/group/${result.payload.id}?created=today`);
+      const groupId = result.payload.id;
+      router?.replace(`/group/${groupId}?created=today`, `/group/${groupId}`, {
+        shallow: true,
+      });
     },
   });
 
