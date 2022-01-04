@@ -57,6 +57,11 @@ export const AutoComplete = <T extends object>({
         onFocus={handleShowModal}
         label={label}
         errors={errors}
+        inputAdornment={selections.map((selection) => (
+          <span className="mr-1" key={getOptionValue(selection)}>
+            {getOptionLabel(selection)}
+          </span>
+        ))}
         {...textFieldProps}
       />
 
