@@ -1,6 +1,7 @@
-import { CSSProperties, Ref } from "react";
+import { ChangeEvent, CSSProperties, Ref, useMemo } from "react";
 
 export interface IModal<T> {
+  selections: T[];
   options: T[];
   show: boolean;
   modalStyle: CSSProperties;
@@ -8,6 +9,9 @@ export interface IModal<T> {
 
   getOptionLabel: (option: T) => string;
   getOptionValue: (option: T) => string;
+  handleOptionChange: (
+    selection: T
+  ) => (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Modal = <T extends object>({
@@ -17,10 +21,18 @@ export const Modal = <T extends object>({
   modalRef,
   getOptionLabel,
   getOptionValue,
+  handleOptionChange,
+  selections,
 }: IModal<T>) => {
   if (!show) {
     return null;
   }
+
+  const selectionValue = useMemo(
+    () => selections.map((selection) => getOptionValue(selection)),
+    [selections, getOptionValue]
+  );
+
   return (
     <div
       id="modal"
@@ -35,8 +47,10 @@ export const Modal = <T extends object>({
         >
           <input
             type="checkbox"
+            checked={selectionValue.includes(getOptionValue(option))}
             className="w-4 h-4 align-middle mx-1 border-2"
             value={getOptionLabel(option)}
+            onChange={handleOptionChange(option)}
           />
           {getOptionLabel(option)}
         </label>
