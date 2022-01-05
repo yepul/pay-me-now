@@ -1,4 +1,4 @@
-import { ChangeEvent, RefObject, useState } from "react";
+import { ChangeEvent, RefObject, useEffect, useState } from "react";
 import { ITextField, TextField } from "../TextField";
 import { IModal, Modal } from "./Modal.AutoComplete";
 import { shift, useFloating } from "@floating-ui/react-dom";
@@ -9,6 +9,7 @@ interface IAutoComplete<T>
   extends ITextField,
     Pick<IModal<T>, "getOptionLabel" | "getOptionValue"> {
   options: T[];
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const AutoComplete = <T extends object>({
@@ -17,6 +18,7 @@ export const AutoComplete = <T extends object>({
   options,
   getOptionLabel,
   getOptionValue,
+  onChange,
   ...textFieldProps
 }: IAutoComplete<T>) => {
   const { x, y, reference, floating, strategy, refs } = useFloating({
@@ -50,6 +52,8 @@ export const AutoComplete = <T extends object>({
           )
         );
       }
+
+      onChange(event);
     };
 
   return (
@@ -59,7 +63,11 @@ export const AutoComplete = <T extends object>({
         label={label}
         errors={errors}
         inputAdornment={selections.map((selection) => (
-          <Chip key={getOptionValue(selection)}>
+          <Chip
+            handleDelete={handleOptionChange(selection)}
+            key={getOptionValue(selection)}
+            value={getOptionValue(selection)}
+          >
             {getOptionLabel(selection)}
           </Chip>
         ))}

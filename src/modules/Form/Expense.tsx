@@ -1,4 +1,4 @@
-import { ChangeEvent, FunctionComponent, useMemo } from "react";
+import { ChangeEvent, FunctionComponent, useEffect, useMemo } from "react";
 import { useFormik } from "formik";
 import { useStoreActions } from "../../store/hooks";
 import { useRouter } from "next/router";
@@ -63,6 +63,7 @@ export const ExpenseForm: FunctionComponent = () => {
       />
       <section aria-details="user selection section" className="mb-4">
         <AutoComplete
+          onChange={handleUser}
           label="Participant"
           id="users"
           placeholder="participants"
