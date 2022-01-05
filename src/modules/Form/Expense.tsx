@@ -1,9 +1,9 @@
-import { ChangeEvent, FunctionComponent, useEffect, useMemo } from "react";
+import { ChangeEvent, FunctionComponent, useMemo } from "react";
 import { useFormik } from "formik";
 import { useStoreActions } from "../../store/hooks";
 import { useRouter } from "next/router";
-import { schema } from "./group-chema";
-import { IExpenseValue } from "../../store/model/expense";
+import { schema } from "./expense-schema";
+import { ISetExpenses } from "../../store/model/expense";
 import { TextField } from "../../components/TextField";
 import { AutoComplete } from "../../components/AutoComplete";
 import { IUser } from "../../store/model/user";
@@ -17,18 +17,26 @@ export const ExpenseForm: FunctionComponent = () => {
     [getGroup, router.query.id]
   );
   const setExpenses = useStoreActions((actions) => actions.expense.setExpenses);
-  const formik = useFormik<Omit<IExpenseValue, "id">>({
+  const formik = useFormik<ISetExpenses>({
     initialValues: {
       name: "",
       users: [],
       groupId: router.query.id as string,
-      total: 0,
+
+      //@ts-ignore
+      total: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
       const result = setExpenses(values);
       //@ts-ignore
-      router?.replace(`/group/${router.query.id}`, { shallow: true });
+      router?.replace(
+        `/group/${router.query.id}?created=today`,
+        `/group/${router.query.id}`,
+        {
+          shallow: true,
+        }
+      );
     },
   });
 
@@ -76,7 +84,7 @@ export const ExpenseForm: FunctionComponent = () => {
         type="submit"
         className="bg-indigo-400 text-indigo-900 text-green-900 pt-2 px-4 rounded-md shadow-md"
       >
-        Create Group
+        Create Expense
       </button>
     </form>
   );
