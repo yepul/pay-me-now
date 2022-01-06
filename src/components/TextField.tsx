@@ -28,7 +28,7 @@ export const TextField: FunctionComponent<ITextField> = ({
           focus-visible:ring-opacity-75 focus-visible:ring-white sm:text-sm"
         {...inputProps}
       />
-      {errors && <span className="text-sm text-red-400">{errors}</span>}
     </div>
+    {errors && <span className="text-sm text-red-400">{errors}</span>}
   </div>
 );
