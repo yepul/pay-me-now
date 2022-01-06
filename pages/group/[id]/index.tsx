@@ -54,7 +54,7 @@ const groupId = () => {
           </button>
         </div>
       </section>
-      <section>
+      <section className="grid gap-4">
         {group.expenses.map((expense) => (
           <ExpenseCard {...expense} key={expense.id} />
         ))}
