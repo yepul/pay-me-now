@@ -26,11 +26,12 @@ export const ExpenseForm: FunctionComponent = () => {
       //@ts-ignore
       total: "",
     },
+    enableReinitialize: true,
     validationSchema: schema,
-    onSubmit: (values) => {
-      const result = setExpenses(values);
+    onSubmit: async (values) => {
+      setExpenses(values);
       //@ts-ignore
-      router?.replace(
+      await router?.replace(
         `/group/${router.query.id}?created=today`,
         `/group/${router.query.id}`,
         {
@@ -82,7 +83,7 @@ export const ExpenseForm: FunctionComponent = () => {
       </section>
       <button
         type="submit"
-        className="bg-indigo-400 text-indigo-900 text-green-900 pt-2 px-4 rounded-md shadow-md"
+        className="bg-indigo-400 text-indigo-900 py-2 px-4 rounded-lg shadow-md"
       >
         Create Expense
       </button>
