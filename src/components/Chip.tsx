@@ -11,7 +11,7 @@ export const Chip: FunctionComponent<IChip> = (props) => {
       <label className="px-2 text-gray-700 select-none">{props.children}</label>
       <button
         type="button"
-        className="mr-1 block relative text-center hover:bg-gray-400 bg-green-300 text-xs rounded-full w-4 h-4"
+        className="mr-1 block relative text-center hover:bg-gray-400 bg-gray-300 text-xs rounded-full w-4 h-4"
       >
         <input
           type="checkbox"
