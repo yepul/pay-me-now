@@ -1,11 +1,17 @@
 import { Action, action, persist, Thunk, thunk } from "easy-peasy";
 import { IStoreModel } from "../index";
 
-interface IPaymentLogs {
-  user: string;
-  amount: number;
+interface ISetPayment {
+  total: number;
   created: string; // ISO string date
+  id: string;
+
+  userId: string;
+  expenseId: string;
+  groupId: string;
 }
+
+export interface IPayment extends Omit<ISetPayment, "groupId" | "expenseId"> {}
 
 export interface IExpenseValue {
   id?: string;
@@ -14,7 +20,7 @@ export interface IExpenseValue {
   total: number;
   groupId: string;
   created: string; // ISO string date
-  payment: IPaymentLogs[];
+  payment: IPayment[];
 }
 
 export interface IGetExpensesByGroup extends Omit<IExpenseValue, "groupId"> {}
@@ -36,11 +42,43 @@ export interface IExpenseModel {
     IStoreModel,
     IGetExpensesByGroup[]
   >;
+  setPayment: Thunk<
+    IExpenseModel,
+    Pick<ISetPayment, "expenseId" | "groupId" | "total" | "userId">,
+    undefined,
+    IStoreModel,
+    IPayment[]
+  >;
+  setPaymentWithGroupIdByExpenseId: Action<IExpenseModel, ISetPayment>;
 }
 
 export const expenseModel: IExpenseModel = persist(
   {
     expenses: {},
+    setPayment: thunk((actions, payload, helpers) => {
+      const { setPaymentWithGroupIdByExpenseId } = actions;
+
+      setPaymentWithGroupIdByExpenseId({
+        id: `payment-${new Date().getTime()}`,
+        created: new Date().toISOString(),
+        ...payload,
+      });
+
+      return (
+        helpers
+          .getState()
+          .expenses[payload.groupId]?.find(
+            (expense) => expense.id === payload.expenseId
+          )?.payment ?? []
+      );
+    }),
+    setPaymentWithGroupIdByExpenseId: action(
+      (state, { groupId, expenseId, ...payment }) => {
+        state.expenses[groupId]
+          .find((expense) => expense.id === expenseId)
+          ?.payment.push(payment);
+      }
+    ),
     setExpenses: action((state, { groupId, ...expense }) => {
       expense["id"] = `expense-${new Date().getTime()}`;
 
