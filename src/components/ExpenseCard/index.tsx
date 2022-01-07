@@ -2,6 +2,7 @@ import { FunctionComponent, useMemo } from "react";
 import { IGetExpensesByGroup } from "../../store/model/expense";
 import dayjs from "dayjs";
 import { useStoreActions } from "../../store/hooks";
+import { IUserCard, UserCard } from "./UserCard";
 
 export const ExpenseCard: FunctionComponent<IGetExpensesByGroup> = (
   expense
@@ -25,14 +26,11 @@ export const ExpenseCard: FunctionComponent<IGetExpensesByGroup> = (
     [expense.created]
   );
 
-  const users = useMemo(
+  const users = useMemo<IUserCard[]>(
     () =>
       expense.users.map((userId) => ({
         ...getUser(userId),
-        total: new Intl.NumberFormat("ms-MY", {
-          style: "currency",
-          currency: "MYR",
-        }).format(expense.total / expense.users.length),
+        total: expense.total / expense.users.length,
       })),
     [expense.users, expense.total, getUser]
   );
@@ -53,10 +51,7 @@ export const ExpenseCard: FunctionComponent<IGetExpensesByGroup> = (
         </div>
         <div className="flex w-full flex-col mt-2">
           {users.map((user) => (
-            <div key={user.id} className="flex w-full justify-between">
-              <div>{user.name}</div>
-              <div> {user.total}</div>
-            </div>
+            <UserCard key={user.id} {...user} />
           ))}
         </div>
       </section>
