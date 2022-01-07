@@ -25,7 +25,7 @@ export const groupModel: IGroupModel = persist(
   {
     groups: [],
     setGroups: action((state, group) => {
-      group["id"] = `group-${new Date().getTime()}?`;
+      group["id"] = `group-${new Date().getTime()}`;
       state.groups.push(group);
     }),
     getGroup: thunk((actions, groupId, helpers) => {
