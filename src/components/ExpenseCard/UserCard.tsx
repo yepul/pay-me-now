@@ -1,4 +1,3 @@
-import { IUser } from "../../store/model/user";
 import { useMemo } from "react";
 import { useStoreActions, useStoreState } from "../../store/hooks";
 import { IPayment } from "../../store/model/expense";
@@ -78,7 +77,7 @@ export const UserCard = (user: IUserCard) => {
           {userById.name}
         </label>
       </div>
-      <div> {totalInCurrency}</div>
+      <div className="text-red-500"> {totalInCurrency}</div>
     </div>
   );
 };
