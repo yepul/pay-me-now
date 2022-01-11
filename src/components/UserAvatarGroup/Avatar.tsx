@@ -1,9 +1,20 @@
 import { useStoreState } from "../../store/hooks";
 import { useMemo } from "react";
 
-export interface IAvatar {}
+export interface IAvatar {
+  id: string;
+  index: number;
+}
 
-export const Avatar = (props: { id: string }) => {
+const palettes = [
+  "#001219ff",
+  "#bb3e03ff",
+  "#005f73ff",
+  "#ee9b00ff",
+  "#0a9396ff",
+];
+
+export const Avatar = (props: IAvatar) => {
   const userById = useStoreState((state) => state.user.userById(props.id));
   const avatarInitials = useMemo(
     () =>
@@ -15,10 +26,16 @@ export const Avatar = (props: { id: string }) => {
         : userById.name?.[0],
     [userById]
   );
+  const backgroundColor = useMemo(
+    () => palettes[props.index % palettes.length],
+    [props.index]
+  );
   return (
     <div
-      key={props.id}
-      className="w-8 h-8 text-sm flex justify-center items-center -mr-1 border-white bg-gray-300 rounded-full uppercase"
+      style={{
+        backgroundColor,
+      }}
+      className="w-8 h-8 text-sm text-white flex justify-center items-center -mr-1 border-white rounded-full uppercase font-medium"
     >
       {avatarInitials}
     </div>
