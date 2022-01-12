@@ -7,11 +7,12 @@ export interface IAvatar {
 }
 
 const palettes = [
+  "#ee9b00ff",
+  "#ff4d6dff",
+  "#0a9396ff",
   "#001219ff",
   "#bb3e03ff",
   "#005f73ff",
-  "#ee9b00ff",
-  "#0a9396ff",
 ];
 
 export const Avatar = (props: IAvatar) => {

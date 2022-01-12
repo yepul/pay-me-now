@@ -55,8 +55,16 @@ export const Summary = (group: IGroup) => {
         </h3>
       </section>
       <div className="grid grid-cols-2 mt-2">
-        <TotalSummary header={"Paid"} total={totalPaid} />
-        <TotalSummary header={"Total"} total={totalExpenses} />
+        <TotalSummary
+          style={{ color: "rgba(52, 211, 153, var(--tw-text-opacity))" }}
+          header={"Paid"}
+          total={totalPaid}
+        />
+        <TotalSummary
+          style={{ color: "darkBlue" }}
+          header={"Total"}
+          total={totalExpenses}
+        />
       </div>
     </div>
   );
