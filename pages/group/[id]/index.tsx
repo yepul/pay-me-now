@@ -6,7 +6,7 @@ import { useStoreState } from "../../../src/store/hooks";
 import { ExpenseCard } from "../../../src/components/ExpenseCard";
 import { UserAvatarGroup } from "../../../src/components/UserAvatarGroup";
 
-const groupId = () => {
+const GroupId = () => {
   const router = useRouter();
 
   const groupById = useStoreState((state) =>
@@ -70,4 +70,4 @@ const groupId = () => {
   );
 };
 
-export default groupId;
+export default GroupId;
