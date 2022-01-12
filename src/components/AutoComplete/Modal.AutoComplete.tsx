@@ -49,7 +49,7 @@ export const Modal = <T extends object>({
             type="checkbox"
             checked={selectionValue.includes(getOptionValue(option))}
             className="w-4 h-4 align-middle mx-1 border-2"
-            value={getOptionLabel(option)}
+            value={getOptionValue(option)}
             onChange={handleOptionChange(option)}
           />
           {getOptionLabel(option)}
