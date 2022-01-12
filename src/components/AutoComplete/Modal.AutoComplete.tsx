@@ -24,14 +24,14 @@ export const Modal = <T extends object>({
   handleOptionChange,
   selections,
 }: IModal<T>) => {
-  if (!show) {
-    return null;
-  }
-
   const selectionValue = useMemo(
     () => selections.map((selection) => getOptionValue(selection)),
     [selections, getOptionValue]
   );
+
+  if (!show) {
+    return null;
+  }
 
   return (
     <div
