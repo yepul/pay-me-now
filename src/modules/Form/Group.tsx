@@ -11,6 +11,7 @@ import { IUser } from "../../store/model/user";
 
 export const GroupForm: FunctionComponent = () => {
   const users = useStoreState((state) => state.user.users);
+  const setUsers = useStoreActions((actions) => actions.user.setUsers);
   const router = useRouter();
   const setGroup = useStoreActions((actions) => actions.group.setGroups);
   const formik = useFormik<Omit<IGroup, "id">>({
@@ -51,6 +52,8 @@ export const GroupForm: FunctionComponent = () => {
       />
       <section aria-details="user selection section">
         <AutoComplete
+          onCreateNew={setUsers}
+          filterBy={"name"}
           options={users as IUser[]}
           onChange={handleUser}
           label="Participant"
