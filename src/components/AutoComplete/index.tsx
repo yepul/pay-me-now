@@ -1,24 +1,31 @@
-import { ChangeEvent, RefObject, useEffect, useState } from "react";
+import { ChangeEvent, RefObject, useEffect, useMemo, useState } from "react";
 import { ITextField, TextField } from "../TextField";
 import { IModal, Modal } from "./Modal.AutoComplete";
 import { shift, useFloating } from "@floating-ui/react-dom";
 import { useClickAway } from "../../utility/useClickAway";
 import { Chip } from "../Chip";
+import { useDebounce } from "use-debounce";
+import { matchSorter } from "match-sorter";
 
 interface IAutoComplete<T>
   extends ITextField,
     Pick<IModal<T>, "getOptionLabel" | "getOptionValue"> {
   options: T[];
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  filterBy: keyof T & string;
+  onCreateNew?: (newOption: string) => void;
 }
 
 export const AutoComplete = <T extends object>({
   label,
   errors,
   options,
+  onChange,
+  filterBy,
+  onCreateNew,
+
   getOptionLabel,
   getOptionValue,
-  onChange,
   ...textFieldProps
 }: IAutoComplete<T>) => {
   const { x, y, reference, floating, strategy, refs } = useFloating({
@@ -38,7 +45,21 @@ export const AutoComplete = <T extends object>({
     handleCloseModal();
   }, [refs.reference as RefObject<HTMLElement>]);
 
+  const [userInput, setUserInput] = useState(() => "");
+  const [recommendationInput] = useDebounce(userInput, 250);
   const [selections, setSelections] = useState<T[]>(() => []);
+
+  const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setUserInput(event.target.value);
+  };
+
+  const recommendation = useMemo(() => {
+    if (!recommendationInput) {
+      return options;
+    }
+
+    return matchSorter(options, recommendationInput, { keys: [filterBy] });
+  }, [options, filterBy, recommendationInput]);
 
   const handleOptionChange =
     (selection: T) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,12 +74,23 @@ export const AutoComplete = <T extends object>({
         );
       }
 
+      setUserInput("");
       onChange(event);
     };
+
+  const isAllowToCreateNew = useMemo(() => Boolean(onCreateNew), [onCreateNew]);
+
+  const handleAddNew = () => {
+    if (onCreateNew && userInput) {
+      onCreateNew(userInput);
+    }
+  };
 
   return (
     <div ref={reference} className="relative">
       <TextField
+        value={userInput}
+        onChange={handleChangeInput}
         onFocus={handleShowModal}
         label={label}
         errors={errors}
@@ -75,7 +107,9 @@ export const AutoComplete = <T extends object>({
       />
 
       <Modal
-        options={options}
+        isAllowToCreateNew={isAllowToCreateNew}
+        handleAddNew={handleAddNew}
+        options={recommendation}
         selections={selections}
         show={showModal}
         modalStyle={{

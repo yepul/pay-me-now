@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import { TotalSummary } from "./TotalSummary";
 import dynamic from "next/dynamic";
 import { IUserAvatarGroup } from "../UserAvatarGroup";
+import { motion } from "framer-motion";
 
 const UserAvatarGroup = dynamic<IUserAvatarGroup>(() =>
   import("../UserAvatarGroup").then((mod) => mod.UserAvatarGroup)
@@ -39,9 +40,11 @@ export const Summary = (group: IGroup) => {
   );
 
   return (
-    <div
+    <motion.div
       onClick={handleRouteToGroup}
       className="shadow-sm border-2 border-gray-100 rounded-lg rounded-tr-2xl rounded-bl-2xl pt-3 pb-5 px-1 cursor-pointer"
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.95 }}
     >
       <section
         className="text-center flex flex-col justify-center"
@@ -66,6 +69,6 @@ export const Summary = (group: IGroup) => {
           total={totalExpenses}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
