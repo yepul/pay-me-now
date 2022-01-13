@@ -7,6 +7,7 @@ import { ISetExpenses } from "../../store/model/expense";
 import { TextField } from "../../components/TextField";
 import { AutoComplete } from "../../components/AutoComplete";
 import { IUser } from "../../store/model/user";
+import { Button } from "../../components/Button";
 
 export const ExpenseForm: FunctionComponent = () => {
   const router = useRouter();
@@ -81,12 +82,7 @@ export const ExpenseForm: FunctionComponent = () => {
           getOptionValue={(option) => option.id}
         />
       </section>
-      <button
-        type="submit"
-        className="bg-indigo-400 text-indigo-900 py-2 px-4 rounded-lg shadow-md"
-      >
-        Create Expense
-      </button>
+      <Button type="submit">Create Expense</Button>
     </form>
   );
 };

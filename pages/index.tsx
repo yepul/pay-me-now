@@ -2,7 +2,7 @@ import { Container } from "../src/components/Container";
 import { useRouter } from "next/router";
 import { GroupCard } from "../src/components/GroupCard";
 import { Title } from "../src/components/Title";
-import { Add } from "../src/components/IconButton/Add";
+import { Add } from "../src/components/Button/Add";
 
 const LandingPage = () => {
   const router = useRouter();

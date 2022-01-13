@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import confetti from "canvas-confetti";
 import { useStoreState } from "../../../src/store/hooks";
 import { Title } from "../../../src/components/Title";
-import { Add } from "../../../src/components/IconButton/Add";
+import { Add } from "../../../src/components/Button/Add";
 import dynamic from "next/dynamic";
 import { IUserAvatarGroup } from "../../../src/components/UserAvatarGroup";
 import { IExpenseValue } from "../../../src/store/model/expense";
