@@ -73,6 +73,7 @@ export const ExpenseForm: FunctionComponent = () => {
       />
       <section aria-details="user selection section" className="mb-4">
         <AutoComplete
+          filterBy={"name"}
           onChange={handleUser}
           label="Participant"
           id="users"
