@@ -13,7 +13,7 @@ jobs:
         run: echo "Starting ${{ github.event_name }}"
       - uses: actions/chekout@v2
       - name: Node version ${{ matrix.node-version }}
-        uses: action/setup-node@v1
+        uses: action/pay-me-now@v1
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
