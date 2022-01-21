@@ -1,0 +1,21 @@
+name: Test Action
+
+on: [push]
+
+jobs:
+  Test-Actions:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - name: On run
+        run: echo "Starting ${{ github.event_name }}"
+      - uses: actions/chekout@v2
+      - name: Node version ${{ matrix.node-version }}
+        uses: action/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm install
+      - run: npm run build
