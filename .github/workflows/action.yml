@@ -1,17 +1,20 @@
 name: Test Action
 
-# on pr to main
+# todo:
+# 1. trigger on pr to main
+# 2. add tag to branches using name of PR
+# 3. install/build sharp
+# 4. zip files
+# 5. create release
+# 6. add files as attachment in release
+
 on:
   push:
     branches: [ main ]
+# - [x] run when PR to main
 #  pull_request:
 #    branches: [ main ]
 
-# - [ ] add tag to branches using name of PR
-# - [ ] npm install sharp
-# - [ ] zip files
-# - [ ] create release
-# - [ ] add files as attachment in release
 jobs:
   Test-Actions:
     runs-on: ubuntu-latest
@@ -29,5 +32,16 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-    - run: npm install sharp
-    - run: npm run build
+      # - [x] add tag to branches using name of PR
+      # - run: git tag ${{ github.payload.pull_request.head.ref }}
+
+      # - [x] install/build sharp
+      - run: npm install sharp
+      - run: npm run build
+
+# - [ ] zip files
+# - [ ] create release
+# - [ ] add files as attachment in release
+#    sudo apt install hub
+#    go get github.com/github/hub
+#    hub release create -a prebuilt.zip -m 'release title' tag-name
