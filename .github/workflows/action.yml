@@ -22,8 +22,12 @@ jobs:
       - name: pr name
 #       run echo "PR from ${{ github.payload.pull_request.head.ref }}"
         run: echo "PR from ${{ github.event.head_commit[0].message }}"
-#    - uses: actions/chekout@v2
-#      with:
-#        fetch-depth: 0
-#    - run: npm install sharp
-#    - run: npm run build
+      - uses: actions/chekout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+    - run: npm install sharp
+    - run: npm run build
