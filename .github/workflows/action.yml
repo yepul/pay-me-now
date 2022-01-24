@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: pr name
 #       run echo "PR from ${{ github.payload.pull_request.head.ref }}"
-        run echo "PR from ${{ github.event.head_commit[0].message }}"
+        run: echo "PR from ${{ github.event.head_commit[0].message }}"
 #    - uses: actions/chekout@v2
 #      with:
 #        fetch-depth: 0
